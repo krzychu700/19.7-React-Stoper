@@ -3,27 +3,22 @@ class Stopwatch extends React.Component {
         super(props); //pogadac o tym
         this.state = {
             running: false,
-            display: '',
+            times: {
+                minutes: 0,
+                seconds: 0,
+                miliseconds: 0
+              }
+            };
         }
-        this.reset(false);
-        this.print(this.times);
-    }
 
-    reset(working) {
-        let times = this.state.times;
-        this.state.times ={
-            minutes: 0,
-            seconds: 0,
-            miliseconds: 0
-        };
+    reset() {
         this.setState({
-            times
-        })
-       if(working) this.resetHard();
-    }
-
-    print() {
-        this.state.display = this.format(this.state.times);
+            times: {
+              minutes: 0,
+              seconds: 0,
+              miliseconds: 0
+            }
+        });
     }
 
     format() {
@@ -43,14 +38,19 @@ class Stopwatch extends React.Component {
                 running: false
             })
             buttonName.innerHTML = 'Start';
-            clearInterval(this.watch);
         }
     }
+
+    stop() {
+        this.setState({
+            running: false
+          });
+          clearInterval(this.watch);
+     };
 
     step() {
         if (!this.state.running) return;
         this.calculate();
-        this.print();
     }
 
     calculate() {
@@ -70,15 +70,14 @@ class Stopwatch extends React.Component {
     }
 
     resetHard() {
-      this.addScore();
-      this.print();
+      this.reset();
       }
       
     addScore() {
+        let timeScore = document.getElementsByClassName("stopwatch");
         let li = document.createElement("li");
         let resultList = document.getElementById("results");
-            
-        li.innerHTML = this.state.display;
+        li.innerHTML = timeScore[0].innerHTML;
         resultList.appendChild(li);
   }
   
@@ -94,9 +93,10 @@ class Stopwatch extends React.Component {
           <div className="stoper">
             <div className="buttons">
               <span href="#" className="button" id="buttonStart" onClick={this.start.bind(this)}>Start</span>
+              <span href="#" className="button" id="buttonStart" onClick={this.addScore.bind(this)}>Add score</span>
               <span href="#" className="button" onClick={this.reset.bind(this)}>Reset</span>
               </div>
-              <div className="stopwatch">{this.state.display}</div>
+              <div className="stopwatch">{this.format(this.state.times)}</div>
             </div>
               <ul className="results" id="results"></ul></div>
           );

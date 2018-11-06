@@ -19,31 +19,25 @@ var Stopwatch = function (_React$Component) {
 
         _this.state = {
             running: false,
-            display: ''
+            times: {
+                minutes: 0,
+                seconds: 0,
+                miliseconds: 0
+            }
         };
-        _this.reset(false);
-        _this.print(_this.times);
         return _this;
     }
 
     _createClass(Stopwatch, [{
         key: 'reset',
-        value: function reset(working) {
-            var times = this.state.times;
-            this.state.times = {
-                minutes: 0,
-                seconds: 0,
-                miliseconds: 0
-            };
+        value: function reset() {
             this.setState({
-                times: times
+                times: {
+                    minutes: 0,
+                    seconds: 0,
+                    miliseconds: 0
+                }
             });
-            if (working) this.resetHard();
-        }
-    }, {
-        key: 'print',
-        value: function print() {
-            this.state.display = this.format(this.state.times);
         }
     }, {
         key: 'format',
@@ -69,15 +63,21 @@ var Stopwatch = function (_React$Component) {
                     running: false
                 });
                 buttonName.innerHTML = 'Start';
-                clearInterval(this.watch);
             }
+        }
+    }, {
+        key: 'stop',
+        value: function stop() {
+            this.setState({
+                running: false
+            });
+            clearInterval(this.watch);
         }
     }, {
         key: 'step',
         value: function step() {
             if (!this.state.running) return;
             this.calculate();
-            this.print();
         }
     }, {
         key: 'calculate',
@@ -99,16 +99,15 @@ var Stopwatch = function (_React$Component) {
     }, {
         key: 'resetHard',
         value: function resetHard() {
-            this.addScore();
-            this.print();
+            this.reset();
         }
     }, {
         key: 'addScore',
         value: function addScore() {
+            var timeScore = document.getElementsByClassName("stopwatch");
             var li = document.createElement("li");
             var resultList = document.getElementById("results");
-
-            li.innerHTML = this.state.display;
+            li.innerHTML = timeScore[0].innerHTML;
             resultList.appendChild(li);
         }
     }, {
@@ -137,6 +136,11 @@ var Stopwatch = function (_React$Component) {
                         ),
                         React.createElement(
                             'span',
+                            { href: '#', className: 'button', id: 'buttonStart', onClick: this.addScore.bind(this) },
+                            'Add score'
+                        ),
+                        React.createElement(
+                            'span',
                             { href: '#', className: 'button', onClick: this.reset.bind(this) },
                             'Reset'
                         )
@@ -144,7 +148,7 @@ var Stopwatch = function (_React$Component) {
                     React.createElement(
                         'div',
                         { className: 'stopwatch' },
-                        this.state.display
+                        this.format(this.state.times)
                     )
                 ),
                 React.createElement('ul', { className: 'results', id: 'results' })
