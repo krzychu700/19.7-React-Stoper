@@ -21,11 +21,7 @@ class Stopwatch extends React.Component {
         });
     }
 
-    format() {
-        return `${this.pad0(this.state.times.minutes)}:${this.pad0(this.state.times.seconds)}:${this.pad0(Math.floor(this.state.times.miliseconds))}`;
-    }
-
-    start() {
+        start() {
         let buttonName = document.getElementById("buttonStart");
         if (!this.state.running) {
             this.setState({
@@ -81,13 +77,7 @@ class Stopwatch extends React.Component {
         resultList.appendChild(li);
   }
   
-  pad0(value) {
-      let result = value.toString();
-
-      return result.length < 2 ? ('0' + result):result;
-  }
-
-    render () {
+     render () {
         return (
             <div>
           <div className="stoper">
@@ -96,11 +86,21 @@ class Stopwatch extends React.Component {
               <span href="#" className="button" id="buttonStart" onClick={this.addScore.bind(this)}>Add score</span>
               <span href="#" className="button" onClick={this.reset.bind(this)}>Reset</span>
               </div>
-              <div className="stopwatch">{this.format(this.state.times)}</div>
+              <div className="stopwatch">{format(this.state.times)}</div>
             </div>
               <ul className="results" id="results"></ul></div>
           );
     }
+}
+
+function format(times) {
+    return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
+}
+
+function pad0(value) {
+    let result = value.toString();
+
+    return result.length < 2 ? ('0' + result):result;
 }
 
 var app = React.createElement(Stopwatch);

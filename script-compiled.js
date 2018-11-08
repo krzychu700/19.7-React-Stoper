@@ -40,11 +40,6 @@ var Stopwatch = function (_React$Component) {
             });
         }
     }, {
-        key: 'format',
-        value: function format() {
-            return this.pad0(this.state.times.minutes) + ':' + this.pad0(this.state.times.seconds) + ':' + this.pad0(Math.floor(this.state.times.miliseconds));
-        }
-    }, {
         key: 'start',
         value: function start() {
             var _this2 = this;
@@ -111,13 +106,6 @@ var Stopwatch = function (_React$Component) {
             resultList.appendChild(li);
         }
     }, {
-        key: 'pad0',
-        value: function pad0(value) {
-            var result = value.toString();
-
-            return result.length < 2 ? '0' + result : result;
-        }
-    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -148,7 +136,7 @@ var Stopwatch = function (_React$Component) {
                     React.createElement(
                         'div',
                         { className: 'stopwatch' },
-                        this.format(this.state.times)
+                        format(this.state.times)
                     )
                 ),
                 React.createElement('ul', { className: 'results', id: 'results' })
@@ -158,6 +146,16 @@ var Stopwatch = function (_React$Component) {
 
     return Stopwatch;
 }(React.Component);
+
+function format(times) {
+    return pad0(times.minutes) + ':' + pad0(times.seconds) + ':' + pad0(Math.floor(times.miliseconds));
+}
+
+function pad0(value) {
+    var result = value.toString();
+
+    return result.length < 2 ? '0' + result : result;
+}
 
 var app = React.createElement(Stopwatch);
 ReactDOM.render(app, document.getElementById("app"));
