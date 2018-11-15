@@ -1,4 +1,6 @@
-'use strict';
+"use strict";
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -29,7 +31,7 @@ var Stopwatch = function (_React$Component) {
     }
 
     _createClass(Stopwatch, [{
-        key: 'reset',
+        key: "reset",
         value: function reset() {
             this.setState({
                 times: {
@@ -40,16 +42,16 @@ var Stopwatch = function (_React$Component) {
             });
         }
     }, {
-        key: 'start',
+        key: "start",
         value: function start() {
             var _this2 = this;
 
-            var buttonName = document.getElementById("buttonStart");
+            // let buttonName = document.getElementById("buttonStart");
             if (!this.state.running) {
                 this.setState({
                     running: true
                 });
-                buttonName.innerHTML = 'Pauza';
+                // buttonName.innerHTML= 'Pauza';
                 this.state.watch = setInterval(function () {
                     return _this2.step();
                 }, 10);
@@ -57,11 +59,11 @@ var Stopwatch = function (_React$Component) {
                 this.setState({
                     running: false
                 });
-                buttonName.innerHTML = 'Start';
+                // buttonName.innerHTML = 'Start';
             }
         }
     }, {
-        key: 'stop',
+        key: "stop",
         value: function stop() {
             this.setState({
                 running: false
@@ -69,35 +71,36 @@ var Stopwatch = function (_React$Component) {
             clearInterval(this.watch);
         }
     }, {
-        key: 'step',
+        key: "step",
         value: function step() {
             if (!this.state.running) return;
             this.calculate();
         }
     }, {
-        key: 'calculate',
+        key: "calculate",
         value: function calculate() {
-            var times = this.state.times;
-            this.state.times.miliseconds += 1;
-            if (this.state.times.miliseconds >= 100) {
-                this.state.times.miliseconds = 0;
-                this.state.times.seconds += 1;
+            var times = _extends({}, this.state.times);
+
+            times.miliseconds += 1;
+            if (times.miliseconds >= 100) {
+                times.miliseconds = 0;
+                times.seconds += 1;
             }
-            if (this.state.times.seconds >= 60) {
-                this.state.times.seconds = 0;
-                this.state.times.minutes += 1;
+            if (times.seconds >= 60) {
+                times.seconds = 0;
+                times.minutes += 1;
             }
             this.setState({
                 times: times
             });
         }
     }, {
-        key: 'resetHard',
+        key: "resetHard",
         value: function resetHard() {
             this.reset();
         }
     }, {
-        key: 'addScore',
+        key: "addScore",
         value: function addScore() {
             var timeScore = document.getElementsByClassName("stopwatch");
             var li = document.createElement("li");
@@ -106,40 +109,48 @@ var Stopwatch = function (_React$Component) {
             resultList.appendChild(li);
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
+            // let span;
+
+            // if (this.state.running) {
+            //     span = <PauzaButton href="#" className="button" id="buttonStart" onClick={this.start.bind(this)} />;
+            // } else {
+            //     span = <StartButton href="#" className="button" id="buttonStart" onClick={this.start.bind(this)} />;
+            // }
+            var buttonLabel = this.state.running ? 'Pauza' : 'Start';
             return React.createElement(
-                'div',
+                "div",
                 null,
                 React.createElement(
-                    'div',
-                    { className: 'stoper' },
+                    "div",
+                    { className: "stoper" },
                     React.createElement(
-                        'div',
-                        { className: 'buttons' },
+                        "div",
+                        { className: "buttons" },
                         React.createElement(
-                            'span',
-                            { href: '#', className: 'button', id: 'buttonStart', onClick: this.start.bind(this) },
-                            'Start'
+                            "span",
+                            { href: "#", className: "button", id: "buttonStart", onClick: this.start.bind(this) },
+                            buttonLabel
                         ),
                         React.createElement(
-                            'span',
-                            { href: '#', className: 'button', id: 'buttonStart', onClick: this.addScore.bind(this) },
-                            'Add score'
+                            "span",
+                            { href: "#", className: "button", id: "buttonStart", onClick: this.addScore.bind(this) },
+                            "Add score"
                         ),
                         React.createElement(
-                            'span',
-                            { href: '#', className: 'button', onClick: this.reset.bind(this) },
-                            'Reset'
+                            "span",
+                            { href: "#", className: "button", onClick: this.reset.bind(this) },
+                            "Reset"
                         )
                     ),
                     React.createElement(
-                        'div',
-                        { className: 'stopwatch' },
+                        "div",
+                        { className: "stopwatch" },
                         format(this.state.times)
                     )
                 ),
-                React.createElement('ul', { className: 'results', id: 'results' })
+                React.createElement("ul", { className: "results", id: "results" })
             );
         }
     }]);
@@ -147,8 +158,24 @@ var Stopwatch = function (_React$Component) {
     return Stopwatch;
 }(React.Component);
 
+function StartButton(props) {
+    return React.createElement(
+        "span",
+        { onClick: props.onClick },
+        "Start"
+    );
+}
+
+function PauzaButton(props) {
+    return React.createElement(
+        "span",
+        { onClick: props.onClick },
+        "Pauza"
+    );
+}
+
 function format(times) {
-    return pad0(times.minutes) + ':' + pad0(times.seconds) + ':' + pad0(Math.floor(times.miliseconds));
+    return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
 }
 
 function pad0(value) {

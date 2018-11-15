@@ -1,6 +1,6 @@
 class Stopwatch extends React.Component {
     constructor(props) {
-        super(props); //pogadac o tym
+        super(props);
         this.state = {
             running: false,
             times: {
@@ -22,18 +22,15 @@ class Stopwatch extends React.Component {
     }
 
         start() {
-        let buttonName = document.getElementById("buttonStart");
         if (!this.state.running) {
             this.setState({
                 running: true
             })
-            buttonName.innerHTML= 'Pauza';
             this.state.watch = setInterval(() => this.step(), 10);
         } else {
             this.setState({
                 running: false
             })
-            buttonName.innerHTML = 'Start';
         }
     }
 
@@ -50,15 +47,16 @@ class Stopwatch extends React.Component {
     }
 
     calculate() {
-        let times = this.state.times;
-        this.state.times.miliseconds += 1;
-        if (this.state.times.miliseconds >= 100) {
-            this.state.times.miliseconds = 0;
-            this.state.times.seconds += 1;
+     const times = {...this.state.times }
+      
+        times.miliseconds += 1;
+        if (times.miliseconds >= 100) {
+            times.miliseconds = 0;
+            times.seconds += 1;
         }
-        if (this.state.times.seconds >= 60) {
-            this.state.times.seconds = 0;
-            this.state.times.minutes += 1;
+        if (times.seconds >= 60) {
+            times.seconds = 0;
+            times.minutes += 1;
         }
         this.setState({
             times
@@ -78,11 +76,12 @@ class Stopwatch extends React.Component {
   }
   
      render () {
+        const buttonLabel = this.state.running ? 'Pauza' : 'Start';
         return (
             <div>
           <div className="stoper">
-            <div className="buttons">
-              <span href="#" className="button" id="buttonStart" onClick={this.start.bind(this)}>Start</span>
+            <div className="buttons">            
+              <span href="#" className="button" id="buttonStart" onClick={this.start.bind(this)}>{buttonLabel}</span>
               <span href="#" className="button" id="buttonStart" onClick={this.addScore.bind(this)}>Add score</span>
               <span href="#" className="button" onClick={this.reset.bind(this)}>Reset</span>
               </div>
